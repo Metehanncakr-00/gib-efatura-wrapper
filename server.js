@@ -2,10 +2,16 @@ const express = require('express');
 const cors = require('cors');
 const { createClient } = require('@supabase/supabase-js');
 const crypto = require('crypto');
+const path = require('path');
 
 const app = express();
+const PORT = process.env.PORT || 3000;
+
 app.use(cors());
 app.use(express.json());
+
+// Statik dosyaları (index.html vb.) dışarıya aç
+app.use(express.static(__dirname));
 
 // ==========================================
 // SUPABASE BAĞLANTI BİLGİLERİ
@@ -25,7 +31,7 @@ function escapeXml(str) {
     .replace(/'/g, '&apos;');
 }
 
-// UBL-TR 1.2 XML Üretici
+// UBL-TR 1.2 XML Üretici Motoru
 function generateUBLTR12(fatura) {
   return `<?xml version="1.0" encoding="UTF-8"?>
 <Invoice xmlns="urn:oasis:names:specification:ubl:schema:xsd:Invoice-2"
@@ -261,7 +267,22 @@ function generateInvoiceHtmlPreview(fatura) {
   `;
 }
 
-// FATURA OLUŞTURMA REST ENDPOINT
+// 🌐 1. ANA SAYFA ROTASI (CANLI PLAYGROUND VE KONSOLU DOĞRUDAN SUN)
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'index.html'));
+});
+
+// 🩺 2. SAĞLIK KONTROLÜ
+app.get('/health', (req, res) => {
+  res.json({
+    status: 'online',
+    service: 'GİB UBL-TR 1.2 E-Fatura Wrapper API',
+    uptime: process.uptime(),
+    timestamp: new Date().toISOString()
+  });
+});
+
+// 🚀 3. FATURA OLUŞTURMA REST ENDPOINT
 app.post('/v1/invoices/create', async (req, res) => {
   try {
     const authHeader = req.headers.authorization;
@@ -369,6 +390,6 @@ app.post('/v1/invoices/create', async (req, res) => {
   }
 });
 
-app.listen(3000, () => {
-  console.log('🚀 GİB E-Fatura API http://localhost:3000 üzerinde hazır!');
+app.listen(PORT, () => {
+  console.log(`🚀 GİB E-Fatura API http://localhost:${PORT} üzerinde hazır!`);
 });
