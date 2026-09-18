@@ -3,20 +3,60 @@
 [![Node.js](https://img.shields.io/badge/Node.js-20.x-339933?style=for-the-badge&logo=node.js&logoColor=white)](https://nodejs.org/)
 [![Express.js](https://img.shields.io/badge/Express.js-000000?style=for-the-badge&logo=express&logoColor=white)](https://expressjs.com/)
 [![Supabase](https://img.shields.io/badge/Supabase-PostgreSQL-3ECF8E?style=for-the-badge&logo=supabase&logoColor=white)](https://supabase.com/)
-[![Standard](https://img.shields.io/badge/GİB_Standard-UBL--TR_1.2-dc2626?style=for-the-badge)](https://ebelge.gib.gov.tr/)
-[![License](https://img.shields.io/badge/License-MIT-blue?style=for-the-badge)](LICENSE)
+[![Render](https://img.shields.io/badge/Render-Live%20Deploy-46E3B7?style=for-the-badge&logo=render&logoColor=white)](https://gib-efatura-wrapper.onrender.com)
+[![GİB Standard](https://img.shields.io/badge/GİB_Standard-UBL--TR_1.2-dc2626?style=for-the-badge)](https://ebelge.gib.gov.tr/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue?style=for-the-badge)](LICENSE)
 
-Türkiye'deki e-ticaret platformları, SaaS girişimleri ve yazılımcılar için Gelir İdaresi Başkanlığı (GİB) E-Fatura standartlarını modern bir REST API mimarisiyle soyutlayan yüksek performanslı ara katman (Wrapper) servisidir.
+Türkiye'deki e-ticaret platformları, SaaS girişimleri ve bağımsız yazılımcılar için Gelir İdaresi Başkanlığı (GİB) E-Fatura standartlarını modern bir REST API mimarisiyle soyutlayan yüksek performanslı ara katman (Wrapper) servisidir.
 
 Karmaşık XML şemaları ve entegratörlerin eski SOAP/WSDL protokolleri yerine; tek bir modern JSON isteğiyle **UBL-TR 1.2 XML**, **İzibiz/Uyumsoft/Logo SOAP Zarfı** ve **GİB Onaylı A4 Görsel PDF Önizlemesi** üretir.
 
 ---
 
+## 🌐 Canlı Demo & Geliştirici Konsolu
+
+Sunucu Render bulutunda 7/24 canlı ve kullanıma hazırdır:  
+👉 **Canlı API ve Test Konsolu:** [https://gib-efatura-wrapper.onrender.com](https://gib-efatura-wrapper.onrender.com)
+
+---
+
+## 📄 GİB Standartlarında Resmi Belge Çıktısı
+
+Sistem, iletilen JSON verisini yalnızca doğrulanmış XML formatına dönüştürmekle kalmaz; 213 Sayılı Vergi Usul Kanunu (V.U.K.) standartlarına uygun, yazdırılabilir ve tek tıkla PDF olarak kaydedilebilir resmi e-fatura şablonunu anında render eder:
+
+```
++---------------------------------------------------------------------------------------+
+|  e-FATURA                                      Duzenleme Tarihi : 2026-09-18          |
+|  GELIR IDARESI BASKANLIGI ELEKTRONIK STANDARDI Duzenleme Zamani : 17:16:59            |
+|  Fatura No : GIB2026918719853                  Senaryo          : TICARIFATURA        |
+|  ETTN      : 2203e24d-35db-4a9d-a002-a86128d3c953 Fatura Tipi  : SATIS               |
++---------------------------------------------------------------------------------------+
+| SATICI BILGILERI                               | ALICI BILGILERI                      |
+| Demo E-Ticaret ve Yazilim A.S.                 | Ornek Teknoloji Ltd. Sti.            |
+| VKN: 1234567890 | Kadikoy V.D. | Istanbul      | VKN: 1234567890 | Kadikoy V.D.       |
++---------------------------------------------------------------------------------------+
+| Sira | Mal / Hizmet Aciklamasi        | Miktar | Birim Fiyat | KDV (%) | Toplam Tutar |
+|  1   | Yazilim ve Entegrasyon Bedeli  | 1 Adet | 2.000,00 TL |  %20    |  2.400,00 TL |
++---------------------------------------------------------------------------------------+
+| Mal/Hizmet Toplam Tutari : 2.000,00 TL                                                |
+| Hesaplanan KDV (%20)     :   400,00 TL                                                |
+| ODENECEK TUTAR           : 2.400,00 TL                                                |
++---------------------------------------------------------------------------------------+
+| Bu belge 213 Sayili V.U.K. hukumlerine gore elektronik ortamda uretilmistir.          |
++---------------------------------------------------------------------------------------+
+```
+
+> 💡 **İpucu:** Oluşturduğunuz faturanın PDF ekran görüntüsünü projenizin `docs/` klasörüne ekleyerek doğrudan bu alanda görsel olarak da sergileyebilirsiniz:  
+> `![Resmi GİB E-Fatura Çıktısı](docs/fatura_ornegi.png)`
+
+---
+
 ## 🎯 Çözülen Problem ve Mimari Vizyon
 
-Türkiye'de e-fatura kesmek isteyen geliştiriciler başlıca şu zorluklarla karşılaşır:
-1. **UBL-TR 1.2 Standart Karmaşası:** 150'den fazla zorunlu XML etiketi, namespace tanımları (`cac:`, `cbc:`, `ext:`) ve tek bir karakter hatasında belgenin GİB tarafından reddedilmesi.
-2. **Eski SOAP/WSDL Protokolleri:** Türkiye'deki özel entegratörlerin (İzibiz, Uyumsoft, Logo vb.) REST yerine hantal XML SOAP zarfları talep etmesi.
+Türkiye'de e-fatura entegrasyonu yapmak isteyen geliştiriciler genellikle şu 3 büyük engelle karşılaşır:
+
+1. **UBL-TR 1.2 Standart Karmaşası:** 150'den fazla zorunlu XML etiketi, namespace tanımları (`cac:`, `cbc:`, `ext:`) ve tek bir karakter (`&`, `<`, `>`) hatasında belgenin GİB tarafından reddedilmesi.
+2. **Eski SOAP/WSDL Protokolleri:** Türkiye'deki özel entegratörlerin (İzibiz, Uyumsoft, Logo vb.) modern REST yerine CDATA içine gömülmüş hantal XML SOAP zarfları talep etmesi.
 3. **Mali Mühür ve ETTN Yönetimi:** RFC 4122 v4 UUID (ETTN) standartlarının ve 16 haneli resmi fatura numaralarının yönetim zorluğu.
 
 Bu proje, geliştiricinin sadece `alici_vkn`, `alici_unvan` ve `tutar` göndereceği yalın bir REST API sunarak tüm yasal dönüşümleri arka planda milisaniyeler içinde tamamlar.
@@ -58,54 +98,19 @@ Bu proje, geliştiricinin sadece `alici_vkn`, `alici_unvan` ve `tutar` gönderec
   * **İzibiz:** `wsse:Security` ve `sendInvoiceRequest` zarf simülasyonu.
   * **Uyumsoft:** `BasicInvoiceService` ve `SendInvoice` CDATA formatı.
   * **e-Logo:** `sendUBLInvoice` ve session doğrulamalı SOAP paketi.
-* 🖨️ **GİB Standart A4 PDF Önizleme:** Resmi kırmızı çerçeveli, satıcı/alıcı VKN dökümlü, tek tıkla yazdırılabilir ve PDF olarak kaydedilebilir dahili fatura şablonu.
+* 🖨️ **GİB Standart A4 PDF Önizleme:** Resmi kırmızı çerçeveli, satıcı/alıcı VKN dökümlü, tek tıkla yazdırılabilir ve PDF olarak kaydedilebilir dahili fatura motoru.
 * 🛡️ **Kurumsal API Güvenliği & Kontör Yönetimi:** Bearer token yetkilendirmesi ve her başarılı faturada otomatik bakiye düşen PostgreSQL entegrasyonu.
 * ⚡ **Canlı Developer Console:** Form üzerinden parametreleri değiştirip anında giden JSON, dönen XML ve canlı Webhook trafiğini izleme imkanı.
 
 ---
 
-## 🚀 Hızlı Başlangıç (Yerel Kurulum)
+## 📡 Canlı API Kullanımı (cURL Örnekleri)
 
-### 1. Depoyu Klonlayın
+Canlı Render sunucusu üzerinden hemen fatura kesmek için aşağıdaki komutu kullanabilirsiniz:
+
+#### Linux / macOS / Git Bash
 ```bash
-git clone https://github.com/KULLANICI_ADINIZ/gib-efatura-wrapper.git
-cd gib-efatura-wrapper
-```
-
-### 2. Bağımlılıkları Yükleyin
-```bash
-npm install
-```
-
-### 3. Ortam Değişkenlerini Tanımlayın
-`server.js` dosyasındaki Supabase bağlantı anahtarlarınızı kontrol edin veya `.env` dosyanıza ekleyin:
-```javascript
-const SUPABASE_URL = 'https://sizin-projeniz.supabase.co';
-const SUPABASE_ANON_KEY = 'sb_publishable_...';
-```
-
-### 4. API Sunucusunu Başlatın
-```bash
-node server.js
-```
-Sunucunuz `http://localhost:3000` portunda istekleri kabul etmeye hazırdır.
-
----
-
-## 📡 API Dokümantasyonu & cURL Örnekleri
-
-### Fatura Oluşturma Uç Noktası
-
-```http
-POST /v1/invoices/create
-Host: localhost:3000
-Authorization: Bearer gib_live_demo_key_999
-Content-Type: application/json
-```
-
-#### Örnek İstek (cURL - Linux / macOS / Bash)
-```bash
-curl -X POST http://localhost:3000/v1/invoices/create \
+curl -X POST https://gib-efatura-wrapper.onrender.com/v1/invoices/create \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer gib_live_demo_key_999" \
   -d '{
@@ -119,9 +124,9 @@ curl -X POST http://localhost:3000/v1/invoices/create \
   }'
 ```
 
-#### Örnek İstek (Windows PowerShell)
+#### Windows PowerShell
 ```powershell
-curl.exe -X POST http://localhost:3000/v1/invoices/create `
+curl.exe -X POST https://gib-efatura-wrapper.onrender.com/v1/invoices/create `
   -H "Content-Type: application/json" `
   -H "Authorization: Bearer gib_live_demo_key_999" `
   -d '{\"alici_vkn\":\"1234567890\",\"alici_unvan\":\"Ornek Teknoloji Ltd. Sti.\",\"entegrator\":\"izibiz\",\"tutar\":2000,\"kdv_orani\":20}'
@@ -135,7 +140,7 @@ curl.exe -X POST http://localhost:3000/v1/invoices/create `
   "fatura_no": "GIB2026918719853",
   "alici": "Ornek Teknoloji Ltd. Sti.",
   "toplam_tutar": "2400.00",
-  "kalan_kontor": 246,
+  "kalan_kontor": 245,
   "entegrator": "IZIBIZ",
   "ubl_xml": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>...",
   "soap_envelope": "<?xml version=\"1.0\" encoding=\"utf-8\"?>...",
@@ -151,23 +156,24 @@ Sistemi canlı veya yerel ortamda test etmek için tanımlanmış anahtarlar:
 
 | Parametre | Değer | Açıklama |
 | :--- | :--- | :--- |
-| **API Endpoint** | `POST /v1/invoices/create` | Standart fatura oluşturma noktası |
-| **Demo API Key** | `Bearer gib_live_demo_key_999` | 250 test kontörü tanımlı şirket anahtarı |
+| **Canlı API Endpoint** | `https://gib-efatura-wrapper.onrender.com/v1/invoices/create` | Bulutta çalışan genel uç nokta |
+| **Demo API Key** | `Bearer gib_live_demo_key_999` | 250 test kontörü tanımlı kurumsal anahtar |
 | **Test VKN** | `1234567890` | Kurumsal tüzel mükellef vergi kimlik numarası |
-| **Test TCKN** | `12345678901` | 11 haneli bireysel e-Arşiv/e-Fatura kimlik no |
+| **Test TCKN** | `12345678901` | 11 haneli bireysel kimlik numarası |
 
 ---
 
 ## 🛠️ Teknoloji Yığını
 
 * **Sunucu & Çalışma Zamanı:** Node.js, Express.js
+* **Dağıtım (Deployment):** Render (Web Service)
 * **Veritabanı & Güvenlik:** Supabase (PostgreSQL 15), Row Level Security (RLS)
-* **XML Standartları:** OASIS Universal Business Language (UBL) 2.1 / GİB UBL-TR 1.2
-* **Protokoller:** REST JSON & SOAP 1.1 / 1.2 / WSDL Simulation
+* **XML Standartları:** OASIS UBL 2.1 / GİB UBL-TR 1.2
+* **Protokoller:** REST JSON & SOAP 1.1 / 1.2 WSDL Simülasyonu
 * **Arayüz & Tasarım:** Tailwind CSS v3, FontAwesome 6, JetBrains Mono
 
 ---
 
 ## 📄 Lisans
 
-Bu proje [MIT Lisansı](LICENSE) altında açık kaynak olarak sunulmuştur. Ticari ve kişisel projelerinizde özgürce kullanabilir, genişletebilirsiniz.
+Bu proje [MIT Lisansı](LICENSE) altında açık kaynak olarak sunulmuştur.
