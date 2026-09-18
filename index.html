@@ -62,16 +62,16 @@
             <!-- API Durumu ve Bakiye -->
             <div class="flex items-center space-x-4">
                 <div class="hidden sm:flex items-center space-x-2 px-3 py-1.5 rounded-lg bg-slate-800/80 border border-slate-700/80 text-xs">
-                    <span class="text-slate-400">Sunucu:</span>
-                    <span class="inline-flex items-center text-emerald-400 font-mono font-medium">
+                    <span class="text-slate-400">Host:</span>
+                    <span id="sunucuHostMetin" class="inline-flex items-center text-emerald-400 font-mono font-medium">
                         <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping mr-1.5"></span>
-                        http://localhost:3000
+                        gib-efatura-wrapper.onrender.com
                     </span>
                 </div>
                 <div class="flex items-center space-x-2 px-3 py-1.5 rounded-lg bg-emerald-950/40 border border-emerald-500/30 text-xs text-emerald-300">
                     <i class="fa-solid fa-bolt text-emerald-400"></i>
                     <span>Kalan Bakiye:</span>
-                    <span id="bakiyeGostergesi" class="font-mono font-bold text-white">248 Kontör</span>
+                    <span id="bakiyeGostergesi" class="font-mono font-bold text-white">245 Kontör</span>
                 </div>
             </div>
         </div>
@@ -275,16 +275,16 @@
                         <div class="w-2.5 h-2.5 rounded-full bg-cyan-400 animate-pulse"></div>
                         <h3 class="text-xs font-bold text-slate-200 tracking-wide uppercase">Canlı Webhook & Olay Simülasyonu</h3>
                     </div>
-                    <span class="text-[10px] font-mono text-slate-500">Target: https://webhook.site/demo</span>
+                    <span class="text-[10px] font-mono text-slate-500">Target: Live Ingest</span>
                 </div>
 
                 <div id="webhookKonsolu" class="space-y-2 font-mono text-xs max-h-36 overflow-y-auto pr-1">
                     <div class="p-2.5 rounded-xl bg-slate-950/80 border border-slate-800 text-slate-400 flex items-center justify-between">
                         <div class="flex items-center space-x-2">
-                            <span class="text-slate-500 text-[10px]">[17:15:00]</span>
-                            <span class="text-slate-300">Webhook dinleyicisi aktif. Fatura olayları bekleniyor...</span>
+                            <span class="text-slate-500 text-[10px]">[ONLINE]</span>
+                            <span class="text-slate-300">Canlı sunucu aktif. Fatura olayları bekleniyor...</span>
                         </div>
-                        <span class="px-2 py-0.5 rounded text-[10px] bg-slate-800 text-slate-400">IDLE</span>
+                        <span class="px-2 py-0.5 rounded text-[10px] bg-slate-800 text-slate-400">READY</span>
                     </div>
                 </div>
             </div>
@@ -320,7 +320,8 @@
 
     <!-- JAVASCRIPT MOTORU -->
     <script>
-        const API_URL = 'http://localhost:3000/v1/invoices/create';
+        // API URL'sini dinamik yapıyoruz: Hem localhost'ta hem Render canlı adresinde otomatik çalışır!
+        const API_URL = window.location.origin + '/v1/invoices/create';
         let sonUretilenXml = '';
         let sonSoapEnvelope = '';
         let sonHtmlPreview = '';
@@ -330,6 +331,11 @@
 
         window.addEventListener('DOMContentLoaded', () => {
             jsonGuncelle();
+            // Ekrandaki sunucu host bilgisini güncelle
+            const hostElement = document.getElementById('sunucuHostMetin');
+            if (hostElement) {
+                hostElement.innerHTML = `<span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping mr-1.5"></span>${window.location.host || 'gib-efatura-wrapper.onrender.com'}`;
+            }
         });
 
         function jsonGuncelle() {
