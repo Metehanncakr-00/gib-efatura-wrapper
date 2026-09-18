@@ -46,7 +46,8 @@ Sistem, iletilen JSON verisini yalnızca doğrulanmış XML formatına dönüşt
 +---------------------------------------------------------------------------------------+
 ```
 
-docs/fatura_ornegi.png
+<img width="767" height="650" alt="fatura_ornegi" src="https://github.com/user-attachments/assets/bacf2a6b-8d6f-47c1-baf5-14bf09908d63" />
+
 
 ---
 
