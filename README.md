@@ -87,9 +87,6 @@ Bu proje, geliştiricinin sadece `alici_vkn`, `alici_unvan` ve `tutar` gönderec
 • Webhook Log Kaydı          • Entegratör SOAP Zarfı
                              • Resmi HTML/PDF Önizleme
 ```
-
-<img width="767" height="650" alt="fatura_ornegi" src="https://github.com/user-attachments/assets/54a94ad4-1116-4f8e-9770-9da7a057a49a" />
-
 ---
 
 ## ✨ Öne Çıkan Özellikler
