@@ -46,8 +46,7 @@ Sistem, iletilen JSON verisini yalnızca doğrulanmış XML formatına dönüşt
 +---------------------------------------------------------------------------------------+
 ```
 
-> 💡 **İpucu:** Oluşturduğunuz faturanın PDF ekran görüntüsünü projenizin `docs/` klasörüne ekleyerek doğrudan bu alanda görsel olarak da sergileyebilirsiniz:  
-> `![Resmi GİB E-Fatura Çıktısı](docs/fatura_ornegi.png)`
+docs/fatura_ornegi.png
 
 ---
 
